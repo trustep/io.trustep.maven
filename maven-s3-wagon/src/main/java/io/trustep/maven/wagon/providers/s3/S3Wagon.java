@@ -16,11 +16,13 @@
  */
 package io.trustep.maven.wagon.providers.s3;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,10 +145,12 @@ public class S3Wagon
         }
         catch ( NoSuchKeyException e )
         {
+            throw new ResourceDoesNotExistException( resourceName + " does not exists.", e );
         }
         catch ( Exception e )
         {
             e.printStackTrace();
+            throw new TransferFailedException( "Unexpected Exception ", e );
         }
         finally
         {
@@ -162,9 +166,6 @@ public class S3Wagon
     public boolean getIfNewer( String resourceName, File destination, long timestamp )
         throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
     {
-        // TODO Auto-generated method stub
-        System.out.println( "S3Wagon.getIfNewer( resourceName = " + resourceName + ", destination=" + destination
-            + ", timestamp = " + timestamp + ")" );
         return false;
     }
 
@@ -172,13 +173,13 @@ public class S3Wagon
     public void put( File source, String destination )
         throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
     {
+        fireTransferDebug( "Put started to destination " + destination + " of file " + source.getAbsolutePath() );
         checkBaseDir();
         Resource resource = new Resource( destination );
 
         firePutInitiated( resource, source );
         resource.setContentLength( source.length() );
         resource.setLastModified( source.lastModified() );
-        firePutInitiated( resource, source );
 
         String baseDir = getRepository().getBasedir().replaceAll( "/", "" );
         String bucket = getRepository().getHost();
@@ -186,14 +187,53 @@ public class S3Wagon
         try
         {
             firePutStarted( resource, source );
-            s3Client.putObject( PutObjectRequest.builder().bucket( bucket ).key( key ).build(),
-                                RequestBody.fromFile( source ) );
+            PutObjectRequest req = PutObjectRequest.builder().bucket( bucket ).key( key ).build();
+            RequestBody body = RequestBody.fromFile( source );
+            s3Client.putObject( req, body );
+            firePutProgress( source, resource );
         }
         finally
         {
             firePutCompleted( resource, source );
         }
 
+    }
+
+    private void firePutProgress( File source, Resource resource )
+        throws TransferFailedException
+    {
+        TransferEvent te = new TransferEvent( this, resource, null, TransferEvent.REQUEST_PUT );
+        byte[] buf = new byte[8192];
+        int i = 0;
+        byte b = -1;
+        try ( BufferedInputStream bis = new BufferedInputStream( new FileInputStream( source ) ) )
+        {
+            while ( ( b = (byte) bis.read() ) != -1 )
+            {
+                buf[i] = b;
+                i++;
+                if ( i > buf.length )
+                {
+                    fireTransferProgress( te, buf, i );
+                    i = 0;
+                }
+            }
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+            throw new TransferFailedException( "Failed to transfer while reading source " + source.getAbsolutePath(),
+                                               e );
+        }
+        finally
+        {
+            if ( i > 0 )
+            {
+                fireTransferProgress( te, buf, i );
+                i = 0;
+            }
+            buf = null;
+        }
     }
 
     @Override
