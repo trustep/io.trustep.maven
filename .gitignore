@@ -1,0 +1,17 @@
+## maven output folder
+**/target
+
+## common log folders
+**/log
+**/logs
+
+## workspaces files from Visual Studio Code
+**/*.code-workspace
+
+## workspace files from Eclipse IDE
+**/*.settings
+**/*.project
+**/*.classpath
+
+## DS_Store files from macosx
+**/*.DS_Store
