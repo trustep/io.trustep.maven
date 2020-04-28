@@ -202,38 +202,38 @@ public class S3Wagon
     private void firePutProgress( File source, Resource resource )
         throws TransferFailedException
     {
-        TransferEvent te = new TransferEvent( this, resource, null, TransferEvent.REQUEST_PUT );
-        byte[] buf = new byte[8192];
-        int i = 0;
-        byte b = -1;
-        try ( BufferedInputStream bis = new BufferedInputStream( new FileInputStream( source ) ) )
-        {
-            while ( ( b = (byte) bis.read() ) != -1 )
-            {
-                buf[i] = b;
-                i++;
-                if ( i > buf.length )
-                {
-                    fireTransferProgress( te, buf, i );
-                    i = 0;
-                }
-            }
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-            throw new TransferFailedException( "Failed to transfer while reading source " + source.getAbsolutePath(),
-                                               e );
-        }
-        finally
-        {
-            if ( i > 0 )
-            {
-                fireTransferProgress( te, buf, i );
-                i = 0;
-            }
-            buf = null;
-        }
+//        TransferEvent te = new TransferEvent( this, resource, null, TransferEvent.REQUEST_PUT );
+//        byte[] buf = new byte[8192];
+//        int i = 0;
+//        byte b = -1;
+//        try ( BufferedInputStream bis = new BufferedInputStream( new FileInputStream( source ) ) )
+//        {
+//            while ( ( b = (byte) bis.read() ) != -1 )
+//            {
+//                buf[i] = b;
+//                i++;
+//                if ( i > buf.length )
+//                {
+//                    fireTransferProgress( te, buf, buf.length );
+//                    i = 0;
+//                }
+//            }
+//        }
+//        catch ( IOException e )
+//        {
+//            e.printStackTrace();
+//            throw new TransferFailedException( "Failed to transfer while reading source " + source.getAbsolutePath(),
+//                                               e );
+//        }
+//        finally
+//        {
+//            if ( i > 0 )
+//            {
+//                fireTransferProgress( te, buf, i );
+//                i = 0;
+//            }
+//            buf = null;
+//        }
     }
 
     @Override

@@ -14,7 +14,7 @@ More details on that can be found at [AWS SDK for Java 2.0 GitHub Page](https://
 ```xml
 	<groupId>io.trustep.maven</groupId>
 	<artifactId>maven-s3-wagon</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 ```
 
 ## Configuration
@@ -159,7 +159,7 @@ Here are the step by step guide:
             <extension>
                 <groupId>io.trustep.maven</groupId>
                 <artifactId>maven-s3-wagon</artifactId>
-                <version>0.1.0</version>
+                <version>0.1.1</version>
             </extension>
         </extensions>
     ```
