@@ -214,7 +214,7 @@ public class S3Wagon
                 i++;
                 if ( i > buf.length )
                 {
-                    fireTransferProgress( te, buf, i );
+                    fireTransferProgress( te, buf, buf.length );
                     i = 0;
                 }
             }

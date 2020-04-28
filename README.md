@@ -4,4 +4,4 @@ A set of maven plugin projects used to enhance quality of development and/or add
 
 ## List of Projects
 
-- [Maven S3 Wagon] (./maven-s3-wagon) A Maven Wagon to connect to Amazon Web Services S3 based repository (AWS S3 WAGON)
+- [Maven S3 Wagon](./maven-s3-wagon) A Maven Wagon to connect to Amazon Web Services S3 based repository (AWS S3 WAGON)
