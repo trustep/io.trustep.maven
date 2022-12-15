@@ -21,7 +21,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.trustep.maven</groupId>
 	<artifactId>maven-s3-wagon</artifactId>
-	<version>0.1.1</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<description>Maven S3 Wagon</description>
 	<properties>
 		<org.antlr.version>4.8</org.antlr.version>

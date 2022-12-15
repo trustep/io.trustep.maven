@@ -154,8 +154,7 @@ Here are the step by step guide:
     To associate the Maven S3 Wagon to your project you need to create an extensions.xml file within a directory .mvn created in the same folder that your pom.xml resides. The .mvn/extensions.xml should be similar to this:
     
     ```xml
-        <extensions xmlns="http://maven.apache.org/EXTENSIONS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.0.0 http://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
+        <extensions xmlns="http://maven.apache.org/EXTENSIONS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.0.0 http://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
             <extension>
                 <groupId>io.trustep.maven</groupId>
                 <artifactId>maven-s3-wagon</artifactId>
